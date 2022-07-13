@@ -1,14 +1,15 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 import {
   CreateUserData,
   findByEmail,
   insert,
 } from "../repositories/authRepository.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const SALT = 10;
 
-export async function signUpService(userData: CreateUserData) {
+export async function signUp(userData: CreateUserData) {
   userData.email = userData.email.toLowerCase();
   const { email, password } = userData;
   const checkEmail = await findByEmail(email);
@@ -22,7 +23,7 @@ export async function signUpService(userData: CreateUserData) {
   await insert(userData);
 }
 
-export async function signInService(userData: CreateUserData) {
+export async function signIn(userData: CreateUserData) {
   const { email, password } = userData;
 
   const user = await findByEmail(email);

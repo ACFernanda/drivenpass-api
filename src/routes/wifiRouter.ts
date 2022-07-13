@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { tokenValidator } from "../middlewares/tokenValidator.js";
 
-const notesRouter = Router();
+const wifiRouter = Router();
 
-notesRouter.use(tokenValidator);
+wifiRouter.use(tokenValidator);
 
-export default notesRouter;
+export default wifiRouter;

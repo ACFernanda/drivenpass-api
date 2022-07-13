@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default function schemaValidatorMiddleware(schema: any) {
+export default function schemaValidator(schema: any) {
   return (req: Request, res: Response, next: NextFunction) => {
     const validation = schema.validate(req.body);
     if (validation.error) {
