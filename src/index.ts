@@ -3,11 +3,12 @@ import "express-async-errors";
 
 import "./config/setup.js";
 import router from "./routes/index.js";
+import handleErrorsMiddleware from "./middlewares/handleErrorMiddleware.js";
 
 const app = express();
 app.use(json());
 app.use(router);
-// app.use(handleErrorsMiddleware);
+app.use(handleErrorsMiddleware);
 
 const port = +process.env.PORT || 5000;
 app.listen(port, () => {
