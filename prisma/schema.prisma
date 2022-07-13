@@ -10,7 +10,7 @@ datasource db {
 model cards {
   id             Int      @id @default(autoincrement())
   userId         Int
-  title          String   @unique
+  title          String
   number         String
   name           String
   securityCode   String
@@ -24,7 +24,7 @@ model cards {
 model credentials {
   id       Int    @id @default(autoincrement())
   userId   Int
-  title    String @unique
+  title    String
   url      String
   user     String
   password String
@@ -34,7 +34,7 @@ model credentials {
 model notes {
   id     Int    @id @default(autoincrement())
   userId Int
-  title  String @unique
+  title  String
   note   String
   users  users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -52,7 +52,7 @@ model users {
 model wifi {
   id       Int    @id @default(autoincrement())
   userId   Int
-  title    String @unique
+  title    String
   name     String
   password String
   users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
