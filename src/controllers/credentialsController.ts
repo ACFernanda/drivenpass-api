@@ -26,5 +26,6 @@ export async function deleteCredential(req: Request, res: Response) {
   const credentialId = req.params.id;
   const { user } = res.locals;
   await credentialService.deleteCredential(user, credentialId);
+
   res.sendStatus(200);
 }

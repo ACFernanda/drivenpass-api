@@ -27,6 +27,13 @@ export async function createCredential(credentialData: CreateCredentialData) {
 export async function getCredential(user: UserTokenInfo, credentialId) {
   const credential = await credentialRepository.getOne(user, credentialId);
 
+  if (!credential) {
+    throw {
+      type: "not_found",
+      message: `Credential not found!`,
+    };
+  }
+
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const decryptedString = cryptr.decrypt(credential.password);
 
@@ -47,6 +54,15 @@ export async function getAllCredentials(user: UserTokenInfo) {
 }
 
 export async function deleteCredential(user: UserTokenInfo, credentialId) {
+  const credential = await credentialRepository.getOne(user, credentialId);
+
+  if (!credential) {
+    throw {
+      type: "not_found",
+      message: `Credential not found!`,
+    };
+  }
+
   await credentialRepository.deleteCredential(user, credentialId);
   return;
 }
