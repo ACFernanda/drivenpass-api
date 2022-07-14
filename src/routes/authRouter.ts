@@ -3,7 +3,6 @@ import { Router } from "express";
 import schemaValidator from "../middlewares/schemaValidator.js";
 import { signUpSchema, signInSchema } from "../schemas/authSchema.js";
 import { signUp, signIn } from "../controllers/authController.js";
-import { tokenValidator } from "../middlewares/tokenValidator.js";
 
 const authRouter = Router();
 

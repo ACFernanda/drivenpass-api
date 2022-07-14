@@ -10,7 +10,7 @@ app.use(json());
 app.use(router);
 app.use(handleErrorsMiddleware);
 
-const port = +process.env.PORT || 5000;
+const port = +process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}.`);
 });
