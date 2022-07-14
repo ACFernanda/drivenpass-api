@@ -1,17 +1,5 @@
-import pg from "pg";
-import "./setup.js";
+import pkg from "@prisma/client"; // precisamos instalar esse pacote!
 
-const { Pool } = pg;
-const configDatabase = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: null,
-};
-
-if (process.env.MODE === "PROD") {
-  configDatabase.ssl = {
-    rejectUnauthorized: false,
-  };
-}
-
-const db = new Pool(configDatabase);
-export default db;
+const { PrismaClient } = pkg;
+const prisma = new PrismaClient();
+export default prisma;

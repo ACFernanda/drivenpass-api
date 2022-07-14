@@ -1,24 +1,17 @@
-import db from "../config/db.js";
+import prisma from "../config/db.js";
+import { users } from "@prisma/client";
 
-export interface User {
-  id: number;
-  email: string;
-  password: string;
-}
-
-export type CreateUserData = Omit<User, "id">;
+export type CreateUserData = Omit<users, "id">;
 
 export async function findByEmail(email: string) {
-  const result = await db.query<User>(`SELECT * FROM users WHERE email = $1`, [
-    email,
-  ]);
-  return result.rows[0];
+  const user = await prisma.users.findUnique({
+    where: { email },
+  });
+  return user;
 }
 
 export async function insert(userData: CreateUserData) {
-  const { email, password } = userData;
-  db.query<CreateUserData>(
-    `INSERT INTO users (email, password) VALUES ($1, $2)`,
-    [email, password]
-  );
+  await prisma.users.create({
+    data: userData,
+  });
 }
