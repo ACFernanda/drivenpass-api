@@ -38,9 +38,9 @@ export async function getCredential(user: UserTokenInfo, credentialId: number) {
   }
 
   const cryptr = new Cryptr(process.env.CRYPTR_KEY);
-  const decryptedString = cryptr.decrypt(credential.password);
+  const decryptedPassword = cryptr.decrypt(credential.password);
 
-  credential.password = decryptedString;
+  credential.password = decryptedPassword;
   return credential;
 }
 
