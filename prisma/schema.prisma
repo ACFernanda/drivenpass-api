@@ -19,6 +19,8 @@ model cards {
   isVirtual      Boolean  @default(false)
   type           cardtype
   users          users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
 }
 
 model credentials {
@@ -29,6 +31,8 @@ model credentials {
   user     String
   password String
   users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
 }
 
 model notes {
@@ -37,6 +41,8 @@ model notes {
   title  String
   note   String
   users  users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
 }
 
 model users {
@@ -56,6 +62,8 @@ model wifi {
   name     String
   password String
   users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
 }
 
 enum cardtype {
