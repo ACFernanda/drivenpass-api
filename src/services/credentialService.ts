@@ -1,7 +1,7 @@
 import Cryptr from "cryptr";
 
 import { CreateCredentialData } from "../repositories/credentialRepository.js";
-import { UserTokenInfo } from "../repositories/credentialRepository.js";
+import { UserTokenInfo } from "../repositories/authRepository.js";
 import * as credentialRepository from "../repositories/credentialRepository.js";
 
 export async function createCredential(credentialData: CreateCredentialData) {

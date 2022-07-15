@@ -1,11 +1,8 @@
 import prisma from "../config/db.js";
 import { credentials } from "@prisma/client";
+import { UserTokenInfo } from "./authRepository.js";
 
 export type CreateCredentialData = Omit<credentials, "id">;
-export interface UserTokenInfo {
-  email: string;
-  id: number;
-}
 
 export async function checkTitle(userId: number, credentialTitle: string) {
   const credential = await prisma.credentials.findFirst({
@@ -19,9 +16,9 @@ export async function insert(credentialData: CreateCredentialData) {
   await prisma.credentials.create({ data: credentialData });
 }
 
-export async function getOne(user: UserTokenInfo, credentialId) {
+export async function getOne(user: UserTokenInfo, credentialId: number) {
   const credential = await prisma.credentials.findFirst({
-    where: { userId: user.id, id: parseInt(credentialId) },
+    where: { userId: user.id, id: credentialId },
   });
 
   return credential;
