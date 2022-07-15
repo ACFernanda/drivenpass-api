@@ -4,6 +4,8 @@ import { CreateCardData } from "../repositories/cardRepository.js";
 import { UserTokenInfo } from "../repositories/authRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 
+const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+
 export async function createCard(
   user: UserTokenInfo,
   cardData: CreateCardData
@@ -17,7 +19,6 @@ export async function createCard(
     };
   }
 
-  const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const encryptSecurityCode = cryptr.encrypt(cardData.securityCode);
   const encryptPassword = cryptr.encrypt(cardData.password);
   cardData.securityCode = encryptSecurityCode;
@@ -27,20 +28,13 @@ export async function createCard(
 }
 
 export async function getCard(user: UserTokenInfo, cardId: number) {
-  const card = await cardRepository.getOne(user, cardId);
+  const card = await checkIfCardExists(user, cardId);
 
-  if (!card) {
-    throw {
-      type: "not_found",
-      message: `Card not found!`,
-    };
-  }
-
-  const cryptr = new Cryptr(process.env.CRYPTR_KEY);
   const decryptedSecurityCode = cryptr.decrypt(card.securityCode);
   const decryptedPassword = cryptr.decrypt(card.password);
   card.securityCode = decryptedSecurityCode;
   card.password = decryptedPassword;
+
   return card;
 }
 
@@ -48,16 +42,21 @@ export async function getAllCards(user: UserTokenInfo) {
   const cards = await cardRepository.getAll(user);
 
   cards.forEach((card) => {
-    const cryptr = new Cryptr(process.env.CRYPTR_KEY);
     const decryptedSecurityCode = cryptr.decrypt(card.securityCode);
     const decryptedPassword = cryptr.decrypt(card.password);
     card.securityCode = decryptedSecurityCode;
     card.password = decryptedPassword;
   });
+
   return cards;
 }
 
 export async function deleteCard(user: UserTokenInfo, cardId: number) {
+  await checkIfCardExists(user, cardId);
+  await cardRepository.deleteCard(user, cardId);
+}
+
+async function checkIfCardExists(user: UserTokenInfo, cardId: number) {
   const card = await cardRepository.getOne(user, cardId);
 
   if (!card) {
@@ -67,6 +66,5 @@ export async function deleteCard(user: UserTokenInfo, cardId: number) {
     };
   }
 
-  await cardRepository.deleteCard(user, cardId);
-  return;
+  return card;
 }
