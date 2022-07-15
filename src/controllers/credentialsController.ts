@@ -10,7 +10,7 @@ export async function createCredential(req: Request, res: Response) {
 }
 
 export async function getCredential(req: Request, res: Response) {
-  const credentialId = req.query.id;
+  const credentialId = +req.query.id;
   const { user } = res.locals;
 
   if (!credentialId) {
@@ -23,7 +23,7 @@ export async function getCredential(req: Request, res: Response) {
 }
 
 export async function deleteCredential(req: Request, res: Response) {
-  const credentialId = req.params.id;
+  const credentialId = +req.params.id;
   const { user } = res.locals;
   await credentialService.deleteCredential(user, credentialId);
 

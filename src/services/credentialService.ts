@@ -24,7 +24,7 @@ export async function createCredential(credentialData: CreateCredentialData) {
   await credentialRepository.insert(credentialData);
 }
 
-export async function getCredential(user: UserTokenInfo, credentialId) {
+export async function getCredential(user: UserTokenInfo, credentialId: number) {
   const credential = await credentialRepository.getOne(user, credentialId);
 
   if (!credential) {
@@ -53,7 +53,10 @@ export async function getAllCredentials(user: UserTokenInfo) {
   return credentials;
 }
 
-export async function deleteCredential(user: UserTokenInfo, credentialId) {
+export async function deleteCredential(
+  user: UserTokenInfo,
+  credentialId: number
+) {
   const credential = await credentialRepository.getOne(user, credentialId);
 
   if (!credential) {

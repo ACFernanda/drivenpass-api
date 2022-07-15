@@ -19,13 +19,6 @@ export async function insert(credentialData: CreateCredentialData) {
   await prisma.credentials.create({ data: credentialData });
 }
 
-export async function getAll(user: UserTokenInfo) {
-  const credentials = await prisma.credentials.findMany({
-    where: { userId: user.id },
-  });
-  return credentials;
-}
-
 export async function getOne(user: UserTokenInfo, credentialId) {
   const credential = await prisma.credentials.findFirst({
     where: { userId: user.id, id: parseInt(credentialId) },
@@ -34,9 +27,19 @@ export async function getOne(user: UserTokenInfo, credentialId) {
   return credential;
 }
 
-export async function deleteCredential(user: UserTokenInfo, credentialId) {
+export async function getAll(user: UserTokenInfo) {
+  const credentials = await prisma.credentials.findMany({
+    where: { userId: user.id },
+  });
+  return credentials;
+}
+
+export async function deleteCredential(
+  user: UserTokenInfo,
+  credentialId: number
+) {
   await prisma.credentials.deleteMany({
-    where: { userId: user.id, id: parseInt(credentialId) },
+    where: { userId: user.id, id: credentialId },
   });
 
   return;
