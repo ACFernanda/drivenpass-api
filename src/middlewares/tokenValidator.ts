@@ -8,7 +8,7 @@ export async function tokenValidator(
 ) {
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "").trim();
-  const secretKey = process.env.JWT_TOKEN;
+  const secretKey = process.env.SECRET_KEY;
 
   if (!token) {
     throw {
