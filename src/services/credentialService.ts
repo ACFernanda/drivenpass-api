@@ -4,9 +4,12 @@ import { CreateCredentialData } from "../repositories/credentialRepository.js";
 import { UserTokenInfo } from "../repositories/authRepository.js";
 import * as credentialRepository from "../repositories/credentialRepository.js";
 
-export async function createCredential(credentialData: CreateCredentialData) {
+export async function createCredential(
+  user: UserTokenInfo,
+  credentialData: CreateCredentialData
+) {
   const credential = await credentialRepository.checkTitle(
-    credentialData.userId,
+    user,
     credentialData.title
   );
 
@@ -21,7 +24,7 @@ export async function createCredential(credentialData: CreateCredentialData) {
   const encryptPassword = cryptr.encrypt(credentialData.password);
   credentialData.password = encryptPassword;
 
-  await credentialRepository.insert(credentialData);
+  await credentialRepository.insert(user, credentialData);
 }
 
 export async function getCredential(user: UserTokenInfo, credentialId: number) {

@@ -2,18 +2,18 @@ import prisma from "../config/db.js";
 import { notes } from "@prisma/client";
 import { UserTokenInfo } from "./authRepository.js";
 
-export type CreateNoteData = Omit<notes, "id">;
+export type CreateNoteData = Omit<notes, "id" | "userId">;
 
-export async function checkTitle(userId: number, noteTitle: string) {
+export async function checkTitle(user: UserTokenInfo, noteTitle: string) {
   const note = await prisma.notes.findFirst({
-    where: { userId, title: noteTitle },
+    where: { userId: user.id, title: noteTitle },
   });
 
   return note;
 }
 
-export async function insert(noteData: CreateNoteData) {
-  await prisma.notes.create({ data: noteData });
+export async function insert(user: UserTokenInfo, noteData: CreateNoteData) {
+  await prisma.notes.create({ data: { ...noteData, userId: user.id } });
 }
 
 export async function getOne(user: UserTokenInfo, noteId: number) {

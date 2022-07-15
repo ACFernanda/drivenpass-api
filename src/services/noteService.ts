@@ -2,8 +2,11 @@ import { CreateNoteData } from "../repositories/noteRepository.js";
 import { UserTokenInfo } from "../repositories/authRepository.js";
 import * as noteRepository from "../repositories/noteRepository.js";
 
-export async function createNote(noteData: CreateNoteData) {
-  const note = await noteRepository.checkTitle(noteData.userId, noteData.title);
+export async function createNote(
+  user: UserTokenInfo,
+  noteData: CreateNoteData
+) {
+  const note = await noteRepository.checkTitle(user, noteData.title);
 
   if (note) {
     throw {
@@ -12,7 +15,7 @@ export async function createNote(noteData: CreateNoteData) {
     };
   }
 
-  await noteRepository.insert(noteData);
+  await noteRepository.insert(user, noteData);
 }
 
 export async function getNote(user: UserTokenInfo, noteId: number) {

@@ -5,7 +5,6 @@ const TITLE_LENGTH = 50;
 const NOTE_LENGTH = 1000;
 
 export const noteSchema = joi.object<CreateNoteData>({
-  userId: joi.number().integer().required(),
   title: joi.string().max(TITLE_LENGTH).required(),
   note: joi.string().max(NOTE_LENGTH).required(),
 });

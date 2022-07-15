@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
 
 import { CreateNoteData } from "../repositories/noteRepository.js";
+import { UserTokenInfo } from "../repositories/authRepository.js";
 import * as noteService from "../services/noteService.js";
 
 export async function createNote(req: Request, res: Response) {
   const noteData: CreateNoteData = req.body;
-  await noteService.createNote(noteData);
+  const user: UserTokenInfo = res.locals.user;
+  await noteService.createNote(user, noteData);
   res.sendStatus(201);
 }
 
 export async function getNote(req: Request, res: Response) {
   const noteId = +req.query.id;
-  const { user } = res.locals;
+  const user: UserTokenInfo = res.locals.user;
 
   if (!noteId) {
     const notes = await noteService.getAllNotes(user);
@@ -24,7 +26,7 @@ export async function getNote(req: Request, res: Response) {
 
 export async function deleteNote(req: Request, res: Response) {
   const noteId = +req.params.id;
-  const { user } = res.locals;
+  const user: UserTokenInfo = res.locals.user;
   await noteService.deleteNote(user, noteId);
 
   res.sendStatus(200);
