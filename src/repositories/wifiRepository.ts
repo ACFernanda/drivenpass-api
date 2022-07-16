@@ -4,14 +4,6 @@ import { UserTokenInfo } from "./authRepository.js";
 
 export type CreateWifiData = Omit<wifi, "id" | "userId">;
 
-export async function checkTitle(user: UserTokenInfo, wifiTitle: string) {
-  const wifi = await prisma.wifi.findFirst({
-    where: { userId: user.id, title: wifiTitle },
-  });
-
-  return wifi;
-}
-
 export async function insert(user: UserTokenInfo, wifiData: CreateWifiData) {
   await prisma.wifi.create({
     data: { ...wifiData, userId: user.id },

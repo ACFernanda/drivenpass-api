@@ -10,15 +10,6 @@ export async function createWifi(
   user: UserTokenInfo,
   wifiData: CreateWifiData
 ) {
-  const wifi = await wifiRepository.checkTitle(user, wifiData.title);
-
-  if (wifi) {
-    throw {
-      type: "conflict",
-      message: `Wifi title already in use!`,
-    };
-  }
-
   const encryptPassword = cryptr.encrypt(wifiData.password);
   wifiData.password = encryptPassword;
 
