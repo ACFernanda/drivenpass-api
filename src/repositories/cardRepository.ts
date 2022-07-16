@@ -6,7 +6,10 @@ export type CreateCardData = Omit<cards, "id" | "userId">;
 
 export async function checkTitle(user: UserTokenInfo, cardTitle: string) {
   const card = await prisma.cards.findFirst({
-    where: { userId: user.id, title: cardTitle },
+    where: {
+      userId: user.id,
+      title: { equals: cardTitle, mode: "insensitive" },
+    },
   });
 
   return card;

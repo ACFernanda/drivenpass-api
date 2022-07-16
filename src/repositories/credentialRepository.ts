@@ -6,7 +6,10 @@ export type CreateCredentialData = Omit<credentials, "id" | "userId">;
 
 export async function checkTitle(user: UserTokenInfo, credentialTitle: string) {
   const credential = await prisma.credentials.findFirst({
-    where: { userId: user.id, title: credentialTitle },
+    where: {
+      userId: user.id,
+      title: { equals: credentialTitle, mode: "insensitive" },
+    },
   });
 
   return credential;

@@ -6,7 +6,10 @@ export type CreateNoteData = Omit<notes, "id" | "userId">;
 
 export async function checkTitle(user: UserTokenInfo, noteTitle: string) {
   const note = await prisma.notes.findFirst({
-    where: { userId: user.id, title: noteTitle },
+    where: {
+      userId: user.id,
+      title: { equals: noteTitle, mode: "insensitive" },
+    },
   });
 
   return note;
